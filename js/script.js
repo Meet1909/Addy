@@ -1,9 +1,5 @@
 var geocoder;
 var map;
-var directionsDisplay;
-var directionsService = new google.maps.DirectionsService();
-var latit;
-var longit;
 
 function initialize() {
   var mapOptions = {
@@ -315,10 +311,6 @@ function initialize() {
   var input = document.getElementById('NameSearch');
   var searchBox = new google.maps.places.SearchBox(input);
 
-  directionsDisplay = new google.maps.DirectionsRenderer();
-  directionsDisplay.setMap(map);
-  google.maps.event.addDomListener(document.getElementById('directions'), 'click', calcRoute);
-
   map.addListener('bounds_changed', function() {
     searchBox.setBounds(map.getBounds());
   });
@@ -448,23 +440,3 @@ function showPosition(position) {
   document.getElementById('NameSearch').value = [lat,long].join(', ');
   codeAddress();
 }
-
-function calcRoute() {
-
-    var end = new google.maps.LatLng(latit, longit);
-    getLocation();
-    var start = new google.maps.LatLng(latit, longit);
-    var request = {
-      origin: start,
-      destination: end,
-      travelMode: google.maps.TravelMode.DRIVING
-    };
-    directionsService.route(request, function(response, status) {
-      if (status == google.maps.DirectionsStatus.OK) {
-        directionsDisplay.setDirections(response);
-        directionsDisplay.setMap(map);
-      } else {
-        alert("Directions Request from " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed: " + status);
-      }
-    });
-  }
