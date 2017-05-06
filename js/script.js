@@ -162,3 +162,16 @@ codeback = function() {
   document.getElementById('NameSearch').value = [(codebackconvert(backcode1)+74000)/10000,(codebackconvert(backcode2)+675000)/10000].join(', ');
   codeAddress();
 }
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+function showPosition(position) {
+  document.getElementById('NameSearch').value = [position.coords.latitude,position.coords.longitude].join(', ');
+  codeAddress();
+}
