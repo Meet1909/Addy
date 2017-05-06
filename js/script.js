@@ -17,7 +17,7 @@ function initialize() {
     },
     styles: [
     {
-        "featureType": "administrative",
+      "featureType": "administrative",
         "elementType": "all",
         "stylers": [
             {
@@ -114,7 +114,7 @@ function initialize() {
                 "saturation": -14
             },
             {
-                "lightness": -18
+                "lightness": -38
             },
             {
                 "visibility": "on"
@@ -311,6 +311,15 @@ function initialize() {
   var input = document.getElementById('NameSearch');
   var searchBox = new google.maps.places.SearchBox(input);
 
+  var directionsService = new google.maps.DirectionsService;
+  var directionsDisplay = new google.maps.DirectionsRenderer;
+
+  directionsDisplay.setMap(map);
+
+  document.getElementById('directions').addEventListener('click', function() {
+    calculateAndDisplayRoute(directionsService, directionsDisplay);
+  });
+
   map.addListener('bounds_changed', function() {
     searchBox.setBounds(map.getBounds());
   });
@@ -321,7 +330,7 @@ google.maps.event.addDomListener(window, "load", initialize);
 codeAddress = function () {
   var address = document.getElementById('NameSearch').value;
   if(address === '' )
-    address = '28.5359744, 77.34566410000002';
+    address = 'New Delhi, Delhi, India';
 
   geocoder = new google.maps.Geocoder();
 
@@ -437,4 +446,34 @@ function showPosition(position) {
   var long = position.coords.longitude;
   document.getElementById('NameSearch').value = [lat,long].join(', ');
   codeAddress();
+}
+
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+  var dest = document.getElementById('info').innerHTML;
+  getLocation();
+  directionsService.route({
+    origin: document.getElementById('info').value,
+    destination: dest,
+    waypoints: 0,
+    optimizeWaypoints: true,
+    travelMode: 'DRIVING'
+  }, function(response, status) {
+    if (status === 'OK') {
+      directionsDisplay.setDirections(response);
+      var route = response.routes[0];
+      var summaryPanel = document.getElementById('directions-panel');
+      summaryPanel.innerHTML = '';
+      // For each route, display summary information.
+      for (var i = 0; i < route.legs.length; i++) {
+        var routeSegment = i + 1;
+        summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+            '</b><br>';
+        summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+        summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+        summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+      }
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
+  });
 }
