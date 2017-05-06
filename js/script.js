@@ -52,7 +52,6 @@ function initialize() {
   map.addListener('bounds_changed', function() {
     searchBox.setBounds(map.getBounds());
   });
-
 }
 
 google.maps.event.addDomListener(window, "load", initialize);
@@ -172,6 +171,33 @@ function getLocation() {
 }
 
 function showPosition(position) {
-  document.getElementById('NameSearch').value = [position.coords.latitude,position.coords.longitude].join(', ');
+  var lat = position.coords.latitude;
+  var long = position.coords.longitude;
+  document.getElementById('NameSearch').value = [lat,long].join(', ');
   codeAddress();
 }
+
+function directioncalc() {
+  var directionsService = new google.maps.DirectionsService;
+  var directionsDisplay = new google.maps.DirectionsRenderer;
+  directionsDisplay.setMap(map);
+  var dest = address;
+  getLocation();
+  calculateAndDisplayRoute(directionsService, directionsDisplay, dest);
+}
+
+function calculateAndDisplayRoute(directionsService, directionsDisplay, dest) {
+    directionsService.route({
+      origin: address,
+      destination: dest,
+      optimizeWaypoints: true,
+      travelMode: 'DRIVING'
+      }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+            var route = response.routes[0];
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
