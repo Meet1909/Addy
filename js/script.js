@@ -17,7 +17,7 @@ function initialize() {
     },
     styles: [
     {
-        "featureType": "administrative",
+      "featureType": "administrative",
         "elementType": "all",
         "stylers": [
             {
@@ -114,7 +114,7 @@ function initialize() {
                 "saturation": -14
             },
             {
-                "lightness": -18
+                "lightness": -38
             },
             {
                 "visibility": "on"
@@ -321,7 +321,7 @@ google.maps.event.addDomListener(window, "load", initialize);
 codeAddress = function () {
   var address = document.getElementById('NameSearch').value;
   if(address === '' )
-    address = '28.5359744, 77.34566410000002';
+    address = 'New Delhi, Delhi, India';
 
   geocoder = new google.maps.Geocoder();
 
