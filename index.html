@@ -6,7 +6,7 @@
 
   <title>Addy</title>
 
-  <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCEqoC5yQIIBXbNVxsuRe787A29ZC32CVA"></script>
+  <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCEqoC5yQIIBXbNVxsuRe787A29ZC32CVA&libraries=places"></script>
   <script type="text/javascript" src="./js/script.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -17,7 +17,7 @@
 
 </head>
 
-<body>
+<body onload="codeAddress()">
   <div id="maparea" align="center"></div>
   <div id="Search" class="col-sm-12" >
     <div id="SearchBox" class="col-sm-4">
