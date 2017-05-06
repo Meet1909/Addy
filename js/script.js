@@ -44,7 +44,15 @@ function initialize() {
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 
-	map = new google.maps.Map(document.getElementById("maparea"), mapOptions);
+  map = new google.maps.Map(document.getElementById("maparea"), mapOptions);
+
+  var input = document.getElementById('NameSearch');
+  var searchBox = new google.maps.places.SearchBox(input);
+
+  map.addListener('bounds_changed', function() {
+    searchBox.setBounds(map.getBounds());
+  });
+
 }
 
 google.maps.event.addDomListener(window, "load", initialize);
@@ -52,7 +60,7 @@ google.maps.event.addDomListener(window, "load", initialize);
 codeAddress = function () {
   var address = document.getElementById('NameSearch').value;
   if(address === '' )
-    address = '26.9363376, 75.92353920000005';
+    address = '28.5359744, 77.34566410000002';
 
   geocoder = new google.maps.Geocoder();
 
@@ -67,7 +75,6 @@ codeAddress = function () {
         position: georesult,
         draggable: true,
         animation:google.maps.Animation.DROP,
-        title: 'drag'
       });
 
       updateMarkerPosition(georesult);
@@ -83,7 +90,6 @@ codeAddress = function () {
       });
       google.maps.event.addListener(marker, 'dragend', function() {
         geocodePosition(marker.getPosition());
-        map.panTo(marker.getPosition());
       });
       google.maps.event.addListener(map, 'click', function(e) {
         updateMarkerPosition(e.latLng);
@@ -92,7 +98,6 @@ codeAddress = function () {
         marker.setPosition(e.latLng);
         map.panTo(marker.getPosition());
       });
-
     }
 
     else {
@@ -154,6 +159,6 @@ codeback = function() {
   var backcode = document.getElementById('BackCode').value;
   var backcode1 = backcode.substring(0,4);
   var backcode2 = backcode.substring(4,8);
-  document.getElementById('NameSearch').value = [(codebackconvert(backcode1)/10000)+7.4,(codebackconvert(backcode2)/10000)+67.5].join(', ');
+  document.getElementById('NameSearch').value = [(codebackconvert(backcode1)+74000)/10000,(codebackconvert(backcode2)+675000)/10000].join(', ');
   codeAddress();
 }
