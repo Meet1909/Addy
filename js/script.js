@@ -351,6 +351,7 @@ codeAddress = function () {
       });
       google.maps.event.addListener(marker, 'dragend', function() {
         geocodePosition(marker.getPosition());
+	map.panTo(marker.getPosition());
       });
       google.maps.event.addListener(map, 'click', function(e) {
         updateMarkerPosition(e.latLng);
