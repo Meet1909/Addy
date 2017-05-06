@@ -449,10 +449,23 @@ function showPosition(position) {
   codeAddress();
 }
 
+function getLocation2() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition2);
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+function showPosition2(position) {
+  latit = position.coords.latitude;
+  longit = position.coords.longitude;
+}
+
 function calcRoute() {
 
     var end = new google.maps.LatLng(latit, longit);
-    getLocation();
+    getLocation2();
     var start = new google.maps.LatLng(latit, longit);
     var request = {
       origin: start,
