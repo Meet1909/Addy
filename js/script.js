@@ -181,14 +181,14 @@ function directioncalc() {
   var directionsService = new google.maps.DirectionsService;
   var directionsDisplay = new google.maps.DirectionsRenderer;
   directionsDisplay.setMap(map);
-  var dest = address;
+  var dest = document.getElementById('info').value;
   getLocation();
   calculateAndDisplayRoute(directionsService, directionsDisplay, dest);
 }
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay, dest) {
     directionsService.route({
-      origin: address,
+      origin: document.getElementById('info').value,
       destination: dest,
       optimizeWaypoints: true,
       travelMode: 'DRIVING'
