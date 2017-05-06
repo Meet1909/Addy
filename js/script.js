@@ -452,7 +452,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   var dest = document.getElementById('info').innerHTML;
   getLocation();
   directionsService.route({
-    origin: document.getElementById('info').value,
+    origin: document.getElementById('info').innerHTML,
     destination: dest,
     waypoints: 0,
     optimizeWaypoints: true,
