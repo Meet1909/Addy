@@ -347,6 +347,7 @@ codeAddress = function () {
         position: georesult,
         draggable: true,
         animation:google.maps.Animation.DROP,
+        icon: 'img/marker.png'
       });
 
       updateMarkerPosition(georesult);
@@ -362,7 +363,6 @@ codeAddress = function () {
       });
       google.maps.event.addListener(marker, 'dragend', function() {
         geocodePosition(marker.getPosition());
-	map.panTo(marker.getPosition());
       });
       google.maps.event.addListener(map, 'click', function(e) {
         updateMarkerPosition(e.latLng);
@@ -371,6 +371,7 @@ codeAddress = function () {
         marker.setPosition(e.latLng);
         map.panTo(marker.getPosition());
       });
+      marker.addListener('click', toggleBounce);
     }
 
     else {
@@ -399,6 +400,15 @@ function updateMarkerPosition(latLng) {
   ].join(', ');
   direclat = latLng.lat();
   direclong = latLng.lng();
+}
+
+function toggleBounce() {
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+  }
+  else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
 }
 
 function updateaddycode(latLng) {
