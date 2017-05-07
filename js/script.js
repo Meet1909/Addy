@@ -1,5 +1,11 @@
 var geocoder;
 var map;
+var directionsDisplay;
+var directionsService = new google.maps.DirectionsService();
+var latit = 28.539923;
+var longit = 77.34398759999999;
+var direclat;
+var direclong;
 
 function initialize() {
   var mapOptions = {
@@ -310,6 +316,10 @@ function initialize() {
 
   var input = document.getElementById('NameSearch');
   var searchBox = new google.maps.places.SearchBox(input);
+  directionsDisplay = new google.maps.DirectionsRenderer();
+
+  directionsDisplay.setMap(map);
+  google.maps.event.addDomListener(document.getElementById('directions'), 'click', calcRoute);
 
   map.addListener('bounds_changed', function() {
     searchBox.setBounds(map.getBounds());
@@ -319,6 +329,7 @@ function initialize() {
 google.maps.event.addDomListener(window, "load", initialize);
 
 codeAddress = function () {
+  initialize();
   var address = document.getElementById('NameSearch').value;
   if(address === '' )
     address = 'New Delhi, Delhi, India';
@@ -331,7 +342,7 @@ codeAddress = function () {
       var georesult = results[0].geometry.location;
       map.setCenter(georesult);
 
-      var marker = new google.maps.Marker({
+      marker = new google.maps.Marker({
         map: map,
         position: georesult,
         draggable: true,
@@ -386,8 +397,8 @@ function updateMarkerPosition(latLng) {
     latLng.lat(),
     latLng.lng()
   ].join(', ');
-  latit = latLng.lat();
-  longit = latLng.lng();
+  direclat = latLng.lat();
+  direclong = latLng.lng();
 }
 
 function updateaddycode(latLng) {
@@ -440,4 +451,31 @@ function showPosition(position) {
   var long = position.coords.longitude;
   document.getElementById('NameSearch').value = [lat,long].join(', ');
   codeAddress();
+}
+
+function getPosition(position) {
+  latit = position.coords.latitude;
+  longit = position.coords.longitude;
+}
+
+function calcRoute() {
+
+  var end = new google.maps.LatLng(direclat, direclong);
+  navigator.geolocation.getCurrentPosition(getPosition);
+  var start = new google.maps.LatLng(latit, longit);
+  //var end = new google.maps.LatLng(38.334818, -181.884886);
+  var request = {
+    origin: start,
+    destination: end,
+    travelMode: google.maps.TravelMode.DRIVING
+  };
+  directionsService.route(request, function(response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+      directionsDisplay.setMap(map);
+    }
+    else {
+      alert("Directions Request from " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed: " + status);
+    }
+  });
 }
